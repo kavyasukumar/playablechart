@@ -1,0 +1,55 @@
+// Mixins
+@import 'compass';
+@import 'compass/reset';
+@import 'mixins';
+
+
+@import "compass/css3/transition";
+
+// Shared styles
+@import 'global';
+@import 'fonts';
+@import 'theverge/vars';
+
+// If you want to use some bootstrap components, enable them here:
+@import 'bootstrap';
+
+<% unless layout == 'chorusforads' %>
+  @import '<%= layout %>/fonts';
+  @import '<%= layout %>/vars';  
+<% end %>
+
+ @import 'modules/m-graphics-topper';
+
+ $transparent : rgba(0,0,0,00);
+ 
+ path.line {
+  fill: none;
+  stroke: $brand-chart-secondary;
+  stroke-width: 1.5px;
+}
+
+path.area {
+  fill: #e7e7e7;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  stroke: #fff;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #666;
+}

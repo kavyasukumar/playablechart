@@ -1,10 +1,9 @@
----
-title: Welcome to Middleman
----
-
-<div class="welcome">
-  <h1>Middleman is Watching</h1>
-  <p class="doc">
-    <%= link_to "Read Online Documentation", "http://middlemanapp.com/" %>
-  </p><!-- .doc -->
-</div><!-- .welcome -->
+<script>var chart_data = <%= data.mysheet.Sheet1.to_json %></script>
+<div id="graphic">
+  <%= partial 'partials/modules/graphics_topper', locals: {
+         hed: data.autotune.title } %>
+  <%= partial 'partials/body', locals: {
+         var: 'example variable'} %>
+</div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<%= javascript_include_tag "chart.js" %>
