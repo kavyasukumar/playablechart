@@ -47,7 +47,7 @@
 
     // Compute the minimum and maximum date, and the maximum price.
     x.domain([dates[0], dates[dates.length - 1]]);
-    y.domain([54,65]).nice();
+    y.domain([AUTOTUNE.y_axis_min, AUTOTUNE.y_axis_max]).nice();
 
     var widthScale = d3.time.scale().range([100, 0]).domain(d3.extent(dates));
 
@@ -105,28 +105,6 @@
       .attr('y1', 1)
       .attr('x2', 1)
       .attr('y2', height)
-
-    /* Create a shared transition for anything we're animating */
-    // var transition = svg.transition()
-    //   .delay(750)
-    //   .duration(3000)
-    //   .ease('linear')
-    //   .each('end', function() {
-    //     // d3.select('line.guide')
-    //     //   .transition()
-    //     //   .style('opacity', 0)
-    //     //   .remove()
-    //   });
-
-    // // t.select('rect.curtain')
-    // //   .attr('width', 0);
-    // // t.select('line.guide')
-    // //   .attr('transform', 'translate(' + width + ', 0)')
-
-    d3.select("#show_guideline").on("change", function(e) {
-      guideline.attr('stroke-width', this.checked ? 1 : 0);
-      curtain.attr("opacity", this.checked ? 0.75 : 1);
-    });
 
     d3.select('#nextbtn').on('click', function(e){
       if(stopIndex == -1){

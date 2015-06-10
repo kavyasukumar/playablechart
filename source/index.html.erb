@@ -1,4 +1,5 @@
 <script>var chart_data = <%= data.mysheet.Sheet1.to_json %></script>
+<script>var AUTOTUNE = <%= data.autotune.to_json %></script>
 <div id="graphic">
   <%= partial 'partials/modules/graphics_topper', locals: {
          hed: data.autotune.title } %>
