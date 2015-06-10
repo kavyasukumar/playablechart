@@ -27,11 +27,10 @@
           "title": "Add min value for y axis",
           "required":true,
           "default": 0
-          },
-          "y_axis_max":{
-          "title": "Add max value for y axis",
-          "required":true
-          },
+        },
+        "y_axis_max":{
+          "title": "Add max value for y axis"
+        },
         "audio_file_url": {
           "title": "Google spreadsheet URL",
           "description": "Enter spreadsheet URL",
