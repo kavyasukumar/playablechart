@@ -1,0 +1,68 @@
+{
+  "name": "Autotune playable table",
+  "description": "Playable chart",
+  "instructions": "",
+  "type": "app",
+  "tags": ["Example"],
+  "thumbnail": "thumbnail.png",
+  "authors": ["Kavya Sukumar <kavya.sukumar@voxmedia.com>"],
+  "form": {
+    "schema": {
+      "title": "Autotune playabale chart",
+      "description": "stuff",
+      "type": "object",
+      "properties": {
+        "theme": {
+          "title": "Vertical",
+          "description": "Choose vertical",
+          "type": "string",
+          "required": true,
+          "default": "vox",
+          "enum": ["sbnation", "theverge", "polygon", "racked", "eater", "vox", "custom"]
+        },        
+        "customColor": {
+          "title": "Custom Color",
+          "type": "string",
+          "default": "#292929",
+          "dependencies": "theme"
+        },
+        "google_doc_url": {
+          "title": "Google spreadsheet URL",
+          "description": "Enter spreadsheet URL",
+          "format": "uri",
+          "required": true
+        },
+        "tweet_text":{
+          "title": "Tweet Text",
+          "description": "text for twitter",
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "options": {
+      "fields": {
+        "google_doc_url": {
+          "type": "url"
+        },
+        "theme": {
+          "type": "select",
+          "optionLabels": ["SBNation", "The Verge", "Polygon", "Racked", "Eater", "Vox", "Custom"]
+        },
+        "customColor": {
+          "helper":"Color for custom theme",  
+          "dependencies": {
+            "theme": "custom"
+          }
+        },
+        "data_source": {
+            "fields": {
+                "data_source_url": {
+                    "type": "url"
+                }
+            }
+        }
+      }
+    }
+  }
+}
