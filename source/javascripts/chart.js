@@ -1,6 +1,6 @@
 (function($) {
   var margin = {top: 80, right: 80, bottom: 80, left: 80},
-  width = 960 - margin.left - margin.right,
+  width = 1000 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
 
   var parse = d3.time.format("%d/%m/%Y").parse
@@ -36,6 +36,7 @@
     });
 
     var stopIndex = -1;
+    var timeElapsed = 0;
 
     var stops = data.filter(function(d){
       if(d.Sound){
@@ -45,10 +46,12 @@
     });
 
     // Compute the minimum and maximum date, and the maximum price.
-    x.domain(d3.extent(dates));
-    y.domain([50,70]).nice();
+    x.domain([dates[0], dates[dates.length - 1]]);
+    y.domain([54,65]).nice();
 
     var widthScale = d3.time.scale().range([100, 0]).domain(d3.extent(dates));
+
+    var audioPlayer = document.getElementById('audioPlayer');
 
     // Add an SVG element with the desired dimensions and margin.
     var svg = d3.select("svg")
@@ -104,21 +107,21 @@
       .attr('y2', height)
 
     /* Create a shared transition for anything we're animating */
-    var transition = svg.transition()
-      .delay(750)
-      .duration(3000)
-      .ease('linear')
-      .each('end', function() {
-        // d3.select('line.guide')
-        //   .transition()
-        //   .style('opacity', 0)
-        //   .remove()
-      });
+    // var transition = svg.transition()
+    //   .delay(750)
+    //   .duration(3000)
+    //   .ease('linear')
+    //   .each('end', function() {
+    //     // d3.select('line.guide')
+    //     //   .transition()
+    //     //   .style('opacity', 0)
+    //     //   .remove()
+    //   });
 
-    // t.select('rect.curtain')
-    //   .attr('width', 0);
-    // t.select('line.guide')
-    //   .attr('transform', 'translate(' + width + ', 0)')
+    // // t.select('rect.curtain')
+    // //   .attr('width', 0);
+    // // t.select('line.guide')
+    // //   .attr('transform', 'translate(' + width + ', 0)')
 
     d3.select("#show_guideline").on("change", function(e) {
       guideline.attr('stroke-width', this.checked ? 1 : 0);
@@ -127,37 +130,43 @@
 
     d3.select('#nextbtn').on('click', function(e){
       if(stopIndex == -1){
-        this.text = 'Next';
+        $(this).text('Next');
       }
       var thisStop = getNextStop();
       var widthpc= widthScale(new Date(thisStop.x_axis))/100;
+      var duration = getDuration();
       
       d3.select('rect.curtain')
         .transition()
-        .delay(750)
-        .duration()
+        .duration(duration)
         .ease('linear')
-        .attr('width', width * widthpc );
-    });
+        .attr('width', width * widthpc + 'px');
 
-  // Parse dates and numbers. We assume values are sorted by date.
-  function type(d) {
-    d.date = parse(d.date);
-    d.price = +d.price;
-    return d;
-  }
+      playAudioForSeconds(duration);
+    });
 
   var getNextStop = function(){
     stopIndex++;
-    return stops[stopIndex];
+    if(stops[stopIndex]){
+      return stops[stopIndex];
+    }
+    return data[data.length - 1];
   }
 
   var getDuration = function(){
-    if(stops[stopIndex + 1]){
-      return stops[stopIndex + 1]*1000;
+    if(stops[stopIndex]){
+      return (stops[stopIndex].Sound*1000) - timeElapsed;
     }
     else {
-      return 10; 
+      return (audioPlayer.duration*1000) - timeElapsed;
     }
+  }
+
+  var playAudioForSeconds = function(duration){
+    audioPlayer.play();
+    setTimeout(function(){
+      audioPlayer.pause(); 
+      timeElapsed += duration;
+    }, duration + 100);
   }
 })($);
