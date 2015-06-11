@@ -57,11 +57,11 @@ set :no_index, true
 
 if (data.autotune.theme == 'custom')
   set :vertical, 'chorusforads'
-  set :layout, 'chorusforads'
 else
   set :vertical, data.autotune.theme
-  set :layout, data.autotune.theme
 end
+
+set :layout, 'default'
 
 set :trailing_slashes, true
 
