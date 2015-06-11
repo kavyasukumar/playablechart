@@ -15,5 +15,5 @@
       "text": "Federal Reserve of St. Louis",
       "link": "http://research.stlouisfed.org/fred2/series/EMRATIO"
     },
-    "continuousplay":true
+    "continuousplay":false
 }

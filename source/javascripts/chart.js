@@ -33,8 +33,10 @@
      return d.y1;
     });
 
-    var stopIndex = 0;
-    var timeElapsed = 0;
+    var stopIndex = 0,
+        timeElapsed = 0,
+        manuallyStopped = false,
+        pauseTimer = null;
 
     var stops = data.filter(function(d, i){
       if(d.Sound || d.Sound == 0 ){
@@ -142,11 +144,33 @@
       .attr('transform', 'rotate(180)')
       .style('fill', '#ffffff');
 
+   var resetChart = function(){
+    stopIndex = 0;
+    clearTimeout(pauseTimer);
+    d3.select('rect.curtain')
+        .transition()
+        .duration(0)
+        .attr('width', 0);
+    $('#nextbtn').addClass('startState').removeClass('playState');
+    $('#timelabel').text('Explain');
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+    timeElapsed = 0;
+  }
+
   var playNext = function(e){
+      if(!audioPlayer.paused){
+        if(!e){
+          manuallyStopped = true;
+        }
+        audioPlayer.pause();
+        resetChart();
+        return;
+      }
       if(stopIndex == 0){
-        $(this).removeClass('startState').addClass('playState');
         d3.select('rect.curtain').attr('width',width + 10 + 'px');
       }
+      $(this).removeClass('startState').addClass('playState');
       var thisStop = getNextStop();
       var widthpc= widthScale(new Date(thisStop.x_axis))/100;
       var duration = getDuration();
@@ -179,13 +203,12 @@
     }
   }
 
-  var resetChart = function(){
-    stopIndex = 0;
-    d3.select('rect.curtain').attr('width',width + 10 + 'px');
-    $('#nextbtn').addClass('startState').removeClass('playState');
-  }
+ 
 
   var showTime = function(e){
+    if(audioPlayer.paused){
+      return;
+    }
     var currTime = parseInt(audioPlayer.currentTime);
 
     var sec = currTime % 60;
@@ -199,16 +222,21 @@
 
   var playAudioForSeconds = function(duration){
     audioPlayer.play();
-    setTimeout(function(){
+    pauseTimer = setTimeout(function(){
       audioPlayer.pause();
       timeElapsed += duration;
-      if(stopIndex != stops.length-1 && AUTOTUNE.continuousplay){
-        playNext();
-      }
-      if(stopIndex == stops.length){
+      if(stopIndex == stops.length-1){
         resetChart();
       }
-
+      else if(AUTOTUNE.continuousplay){
+        if(!manuallyStopped){
+          playNext();
+        }
+      }
+      else{
+        $('#nextbtn').addClass('startState').removeClass('playState');
+        $('#timelabel').text('Next');
+      }
     }, duration + 50);
   }
   d3.select('#nextbtn').on('click', playNext);
