@@ -176,7 +176,7 @@
     audioPlayer.pause();
     audioPlayer.currentTime = 0;
     timeElapsed = 0;
-    d3.selectAll('.dot').hide();
+    d3.selectAll('.dot').style('display','block');
   }
 
   var playNext = function(e){
@@ -188,6 +188,7 @@
         resetChart();
         return;
       }
+      d3.selectAll('.dot').style('display','none');
       if(stopIndex == 0){
         d3.select('rect.curtain').attr('width',curtainWidth + 'px');
       }
