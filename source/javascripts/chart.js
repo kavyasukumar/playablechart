@@ -33,13 +33,16 @@
      return d.y1;
     });
 
-    var stopIndex = -1;
+    var stopIndex = 0;
     var timeElapsed = 0;
 
-    var stops = data.filter(function(d){
-      if(d.Sound){
+    var stops = data.filter(function(d, i){
+      if(d.Sound || d.Sound == 0 ){
         return true;
-      } 
+      }
+      if (i == data.length - 1) {
+        return true;
+      }
       return false;
     });
 
@@ -62,7 +65,7 @@
     svg.append("clipPath")
         .attr("id", "clip")
       .append("rect")
-        .attr("width", width)
+        .attr("width", width + 10)
         .attr("height", height);
 
     // Add the x-axis.
@@ -77,6 +80,12 @@
         .call(yAxis);
 
 
+    var tooltip = d3.select('body')
+      .append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0)
+      .style('display', 'none');
+
     var colors = d3.scale.category10();
 
     svg.append('path')
@@ -84,9 +93,48 @@
           .attr('clip-path', 'url(#clip)')
           .attr('d', line(data));
 
-    /* Add 'curtain' rectangle to hide entire graph */
+    // Plot stopping points
+    svg
+      .selectAll('.dot')
+      .data(stops)
+      .enter()
+    .append('circle')
+      .classed('dot', true)
+      .attr('cx', function(d) {
+        return x(new Date(d.x_axis));
+      })
+      .attr('cy', function(d) {
+        return y(d.y1)
+      })
+      .attr('r', 8)
+      .attr('stroke', '#38EDF5')
+      .attr('stroke-width', 3)
+      .style('fill', '#EAEAEA')
+
+      .on('mouseenter', function(d) {
+        d3.select(this).style('fill', '#38EDF5')
+        tooltip
+          .style('display', 'block')
+          .transition()
+            .duration(200)
+            .style('opacity', 1);
+        tooltip
+          .style('left', (d3.event.pageX + 8) + 'px')
+          .style('top', (d3.event.pageY + 8) + 'px')
+          .html(d.Text);
+      })
+      .on('mouseleave', function(d) {
+        tooltip
+          .transition()
+            .duration(200)
+            .style('opacity', 0)
+            .style('display', 'none');
+        d3.select(this).style('fill', '#EAEAEA')
+      });
+
+   /* Add 'curtain' rectangle to hide entire graph */
     var curtain = svg.append('rect')
-      .attr('x', -1 * width)
+      .attr('x', -1 * (width + 10))
       .attr('y', -1 * height)
       .attr('height', height)
       .attr('width', 0)
@@ -94,16 +142,15 @@
       .attr('transform', 'rotate(180)')
       .style('fill', '#ffffff');
 
-
   var playNext = function(e){
-      if(stopIndex == -1){
-        $(this).text('Next');
-        d3.select('rect.curtain').attr('width',width +'px');
+      if(stopIndex == 0){
+        $(this).removeClass('startState').addClass('playState');
+        d3.select('rect.curtain').attr('width',width + 10 + 'px');
       }
       var thisStop = getNextStop();
       var widthpc= widthScale(new Date(thisStop.x_axis))/100;
       var duration = getDuration();
-      
+
       d3.select('rect.curtain')
         .transition()
         .duration(duration)
@@ -111,7 +158,9 @@
         .attr('width', width * widthpc + 'px');
 
       playAudioForSeconds(duration);
-    }
+    };
+
+    d3.select('#nextbtn').on('click', playNext);
 
   var getNextStop = function(){
     stopIndex++;
@@ -122,7 +171,7 @@
   }
 
   var getDuration = function(){
-    if(stops[stopIndex]){
+    if(stops[stopIndex] && stops[stopIndex].Sound){
       return (stops[stopIndex].Sound * 1000) - timeElapsed;
     }
     else {
@@ -130,18 +179,25 @@
     }
   }
 
+  var resetChart = function(){
+    stopIndex = 0;
+    d3.select('rect.curtain').attr('width',width + 10 + 'px');
+    $('#nextbtn').addClass('startState').removeClass('playState');
+  }
+
   var playAudioForSeconds = function(duration){
     audioPlayer.play();
     setTimeout(function(){
-      audioPlayer.pause(); 
+      audioPlayer.pause();
       timeElapsed += duration;
-      if(stopIndex != stops.length-1){
+      if(stopIndex != stops.length-1 && AUTOTUNE.continuousplay){
         playNext();
       }
+      if(stopIndex == stops.length){
+        resetChart();
+      }
+
     }, duration + 50);
   }
-
-
-
-    d3.select('#nextbtn').on('click', playNext);
+  d3.select('#nextbtn').on('click', playNext);
 })($);
