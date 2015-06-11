@@ -36,10 +36,13 @@
     var stopIndex = -1;
     var timeElapsed = 0;
 
-    var stops = data.filter(function(d){
-      if(d.Sound){
+    var stops = data.filter(function(d, i){
+      if(d.Sound || d.Sound == 0 ){
         return true;
-      } 
+      }
+      if (i == data.length - 1) {
+        return true;
+      }
       return false;
     });
 
@@ -77,6 +80,12 @@
         .call(yAxis);
 
 
+    var tooltip = d3.select('body')
+      .append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0)
+      .style('display', 'none');
+
     var colors = d3.scale.category10();
 
     svg.append('path')
@@ -93,6 +102,7 @@
       .attr('class', 'curtain')
       .attr('transform', 'rotate(180)')
       .style('fill', '#ffffff')
+      .style('display', 'none')
 
     /* Optionally add a guideline */
     var guideline = svg.append('line')
@@ -104,6 +114,45 @@
       .attr('x2', 1)
       .attr('y2', height)
 
+    // Plot stopping points
+    svg
+      .selectAll('.dot')
+      .data(stops)
+      .enter()
+    .append('circle')
+      .classed('dot', true)
+      .attr('cx', function(d) {
+        return x(new Date(d.x_axis));
+      })
+      .attr('cy', function(d) {
+        return y(d.y1)
+      })
+      .attr('r', 8)
+      .attr('stroke', '#38EDF5')
+      .attr('stroke-width', 3)
+      .style('fill', '#EAEAEA')
+
+      .on('mouseenter', function(d) {
+        d3.select(this).style('fill', '#38EDF5')
+        tooltip
+          .style('display', 'block')
+          .transition()
+            .duration(200)
+            .style('opacity', 1);
+        tooltip
+          .style('left', (d3.event.pageX + 8) + 'px')
+          .style('top', (d3.event.pageY + 8) + 'px')
+          .html(d.Text);
+      })
+      .on('mouseleave', function(d) {
+        tooltip
+          .transition()
+            .duration(200)
+            .style('opacity', 0)
+            .style('display', 'none');
+        d3.select(this).style('fill', '#EAEAEA')
+      });
+
     d3.select('#nextbtn').on('click', function(e){
       if(stopIndex == -1){
         $(this).text('Next');
@@ -111,7 +160,7 @@
       var thisStop = getNextStop();
       var widthpc= widthScale(new Date(thisStop.x_axis))/100;
       var duration = getDuration();
-      
+
       d3.select('rect.curtain')
         .transition()
         .duration(duration)
@@ -141,7 +190,7 @@
   var playAudioForSeconds = function(duration){
     audioPlayer.play();
     setTimeout(function(){
-      audioPlayer.pause(); 
+      audioPlayer.pause();
       timeElapsed += duration;
     }, duration + 100);
   }
