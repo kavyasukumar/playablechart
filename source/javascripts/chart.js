@@ -1,7 +1,7 @@
 (function($) {
   var margin = {top: 80, right: 80, bottom: 80, left: 80},
-  width = 1000 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
+  width = $(window).width() - margin.left - margin.right,
+  height = Math.min(500, $(window).height()) - margin.top - margin.bottom;
 
   // Scales and axes. Note the inverted domain for the y-scale: bigger is up!
   var x = d3.time.scale().range([0, width]),
@@ -52,10 +52,13 @@
     x.domain([dates[0], dates[dates.length - 1]]);
     y.domain([AUTOTUNE.y_axis.minval, AUTOTUNE.y_axis.maxval]).nice();
 
-    var widthScale = d3.time.scale().range([100, 0]).domain(d3.extent(dates));
+    var curtainWidth = width + 20;
+
+    var widthScale = d3.time.scale().range([curtainWidth, 0]).domain(d3.extent(dates));
 
     var audioPlayer = document.getElementById('audioPlayer');
 
+    $('.stacker').width(width + margin.left + margin.right +'px');
     // Add an SVG element with the desired dimensions and margin.
     var svg = d3.select("svg")
         .attr("width", width + margin.left + margin.right)
@@ -67,13 +70,13 @@
     svg.append("clipPath")
         .attr("id", "clip")
       .append("rect")
-        .attr("width", width + 10)
+        .attr("width", curtainWidth)
         .attr("height", height);
 
     // Add the x-axis.
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + (height + 10) + ")")
         .call(xAxis);
 
     // Add the y-axis.
@@ -81,6 +84,10 @@
         .attr("class", "y axis")
         .call(yAxis);
 
+    if(AUTOTUNE.y_axis.units){
+      var ticks = $('.y.axis .tick text');
+      d3.select(ticks[ticks.length-1]).text(d3.select(ticks[ticks.length-1]).text() + ' ' + AUTOTUNE.y_axis.units);
+    }
 
     var tooltip = d3.select('body')
       .append('div')
@@ -108,7 +115,7 @@
       .attr('cy', function(d) {
         return y(d.y1)
       })
-      .attr('r', 8)
+      .attr('r', 5)
       .attr('stroke', '#38EDF5')
       .attr('stroke-width', 3)
       .style('fill', '#EAEAEA')
@@ -136,13 +143,26 @@
 
    /* Add 'curtain' rectangle to hide entire graph */
     var curtain = svg.append('rect')
-      .attr('x', -1 * (width + 10))
+      .attr('x', -1 * (curtainWidth))
       .attr('y', -1 * height)
       .attr('height', height)
       .attr('width', 0)
       .attr('class', 'curtain')
-      .attr('transform', 'rotate(180)')
-      .style('fill', '#ffffff');
+      .attr('transform', 'rotate(180)');
+
+     svg.selectAll("line.horizontalGrid").data(y.ticks(4)).enter()
+    .append("line")
+        .attr(
+        {
+            "class":"horizontalGrid",
+            "x1" : 0,
+            "x2" : width,
+            "y1" : function(d){ return y(d);},
+            "y2" : function(d){ return y(d);},
+            "fill" : "none",
+            "shape-rendering" : "crispEdges",
+            "stroke-width" : "1px"
+        });
 
    var resetChart = function(){
     stopIndex = 0;
@@ -156,6 +176,7 @@
     audioPlayer.pause();
     audioPlayer.currentTime = 0;
     timeElapsed = 0;
+    d3.selectAll('.dot').hide();
   }
 
   var playNext = function(e){
@@ -168,18 +189,18 @@
         return;
       }
       if(stopIndex == 0){
-        d3.select('rect.curtain').attr('width',width + 10 + 'px');
+        d3.select('rect.curtain').attr('width',curtainWidth + 'px');
       }
       $(this).removeClass('startState').addClass('playState');
       var thisStop = getNextStop();
-      var widthpc= widthScale(new Date(thisStop.x_axis))/100;
+      var newwidth= widthScale(new Date(thisStop.x_axis));
       var duration = getDuration();
 
       d3.select('rect.curtain')
         .transition()
         .duration(duration)
         .ease('linear')
-        .attr('width', width * widthpc + 'px');
+        .attr('width', newwidth + 'px');
 
       playAudioForSeconds(duration);
     };

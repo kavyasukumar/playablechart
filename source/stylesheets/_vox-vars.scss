@@ -1,0 +1,49 @@
+@font-face {
+  font-family:"Balto";
+  src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-book.v81c1cef.eot);
+  src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-book.ved29186.woff)  format("woff");
+  font-weight:400;
+  font-style:normal
+}
+
+@font-face {
+  font-family:"Balto italic";
+  src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-bookitalic.vececd9d.eot);
+  src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-bookitalic.v7110058.woff) format("woff");
+  font-weight:400;
+  font-style:italic;
+  }
+  @font-face { 
+    font-family:"Balto medium";
+    src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-medium.v32923ad.eot);
+    src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-medium.v10502d2.woff) format("woff");
+    font-weight:500;
+    font-style:normal;
+  }
+  @font-face {
+    font-family:"Balto bold italic";
+    src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-bolditalic.v5ba409b.eot);
+    src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-bolditalic.v7795045.woff) format("woff");
+    font-weight:600;
+    font-style:italic;
+  }
+  @font-face {
+    font-family:"Balto bold";
+    src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-bold.v8e1522a.eot);
+    src:url(https://cdn0.vox-cdn.com/fonts/vox/baltoweb-bold.v02933a5.woff) format("woff");
+    font-weight:700;
+    font-style:normal;
+  }
+
+
+html, body {
+  font-family: "Balto", sans-serif;
+}
+
+h2, .x.axis .tick text{
+  font-family: "Balto bold", sans-serif;
+}
+
+h4, .y.axis .tick text{
+  font-family: "Balto medium", sans-serif;
+}

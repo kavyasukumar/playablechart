@@ -6,12 +6,35 @@
 @import "compass/css3/transition";
 @import 'bootstrap';
 
+@import "vox-vars";
 
  $chart-color: #f6901e;
  $text-color: #4c4d4e;
  $highlight-color: #c7eef2;
+ $background-color: #f9f9f9;
 
  $transparent : rgba(0,0,0,00);
+
+ body, html{
+  background-color: $background-color;
+  height: auto;
+}
+
+svg, .stacker{
+  margin: auto;
+  display: block;
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+#topper{
+  background-color: $highlight-color;
+}
+
+
+rect.curtain{
+  fill: $background-color;
+}
 
  path.line {
   fill: none;
@@ -20,17 +43,17 @@
 }
 
 path.area {
-  fill: #e7e7e7;
+  fill: $background-color;
 }
 
 .axis {
   shape-rendering: crispEdges;
 }
 
-.x.axis line {
-  stroke: #fff;
+.axis line, .axis path {
+  fill: none;
+  stroke: $background-color;
 }
-
 .x.axis .minor {
   stroke-opacity: .5;
 }
@@ -39,15 +62,16 @@ path.area {
   display: none;
 }
 
-.y.axis line, .y.axis path {
-  fill: none;
-  stroke: #666;
+
+line.horizontalGrid{
+  stroke: rgba($text-color, .1);
 }
+
 
 .tooltip {
   max-width: 16em;
   font-size: 0.9em;
-  background: rgba($highlight-color, 0.75);
+  background: rgba($highlight-color, 0.85);
   color: $text-color;
   padding: 1em;
   border-radius: 0.4em;

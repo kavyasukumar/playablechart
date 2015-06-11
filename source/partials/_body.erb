@@ -1,11 +1,18 @@
 <audio id="audioPlayer" preload="auto">
 	 <source src="<%= data.autotune.audio_file_url %>" type="audio/mpeg"/>
 </audio>
-<div id="topper">
+<div id="topper" class="stacker">
 	<h2><%= data.autotune.title %></h2>
 	<button id="nextbtn" class='btn btn-primary startState'><span id='timelabel'>Explain</span></button>
 </div>
 <% unless data.autotune.deck.nil? %>
-	<h4><%= data.autotune.deck %></h4>
+	<h4 class="stacker"><%= data.autotune.deck %></h4>
 <% end %>
 <svg></svg>
+<p id="credits" class="stacker">
+	<% if !data.autotune.credits.link.nil? && !data.autotune.credits.text.nil? %>
+		Data : <a href= "<%= data.autotune.credits.link %>" target="_blank"><%= data.autotune.credits.text %></a>
+	<% elsif !data.autotune.credits.text.nil? %>
+		Data : <%= data.autotune.credits.text %>
+	<% end %>
+</p>
