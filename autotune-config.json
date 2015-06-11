@@ -17,25 +17,51 @@
           "default": "#292929",
           "dependencies": "theme"
         },
+        "deck":{
+          "title": "Subhed",
+          "type":"string"
+        },
         "google_doc_url": {
           "title": "Google spreadsheet URL",
           "description": "Enter spreadsheet URL",
           "format": "uri",
           "required": true
         },
-        "y_axis_min":{
-          "title": "Add min value for y axis",
-          "required":true,
-          "default": 0
-        },
-        "y_axis_max":{
-          "title": "Add max value for y axis"
+        "y_axis":{
+          "type":"object",
+          "title":"Y Axis",
+          "properties":{
+            "minval":{
+            "title": "Min value for y axis",
+            "required":true,
+            "default": 0
+            },
+            "maxval":{
+              "title": "Max value for y axis"
+            },
+            "units":{
+              "title": "Y axis units"
+            }
+          }
         },
         "audio_file_url": {
-          "title": "Google spreadsheet URL",
-          "description": "Enter spreadsheet URL",
+          "title": "MP3 Audio file URL",
           "format": "uri",
           "required": true
+        },
+        "credits":{
+          "type":"object",
+          "title":"Credits",
+          "properties":{
+            "text":{
+              "title":"Credit text"
+            },
+            "Link":{
+              "title":"link",
+              "required":false,
+              "format":"uri"
+            }
+          }
         },
         "tweet_text":{
           "title": "Tweet Text",
@@ -55,6 +81,9 @@
           "dependencies": {
             "theme": "custom"
           }
+        },
+        "deck":{
+            "type":"textarea"
         }
       }
     }

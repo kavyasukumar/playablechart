@@ -3,9 +3,16 @@
   "title": "This chart talks",
   "slug": "talking-chart",
   "theme": "theverge",
-  "google_doc_url": "https://docs.google.com/spreadsheets/d/1WmBVGdOs2RRBVoGDbP2kJ_dfXAsWkNza3uS2OdLoxAk/pubhtml",
-  "audio_file_url": "https://cdn1.vox-cdn.com/uploads/chorus_asset/file/3779432/EmploymentPopulationRatio.0.mp3",
-  "customColor": "#f0f",
-  "y_axis_min": 50,
-  "y_axis_max": 65
+  "deck": "Unemployment to population ratio. (1948 - 2015)",
+    "google_doc_url": "https://docs.google.com/spreadsheets/d/1WmBVGdOs2RRBVoGDbP2kJ_dfXAsWkNza3uS2OdLoxAk/edit?usp=sharing",
+    "y_axis": {
+      "minval": "55",
+      "maxval": "64",
+      "units": "%"
+    },
+    "audio_file_url": "https://cdn1.vox-cdn.com/uploads/chorus_asset/file/3779432/EmploymentPopulationRatio.0.mp3",
+    "credits": {
+      "text": "Federal Reserve of St. Louis",
+      "link": "http://research.stlouisfed.org/fred2/series/EMRATIO"
+    }
 }
