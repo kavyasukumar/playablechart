@@ -3,8 +3,6 @@
   width = 1000 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
 
-  var parse = d3.time.format("%d/%m/%Y").parse
-
   // Scales and axes. Note the inverted domain for the y-scale: bigger is up!
   var x = d3.time.scale().range([0, width]),
       y = d3.scale.linear().range([height, 0]),
@@ -47,7 +45,7 @@
 
     // Compute the minimum and maximum date, and the maximum price.
     x.domain([dates[0], dates[dates.length - 1]]);
-    y.domain([AUTOTUNE.y_axis_min, AUTOTUNE.y_axis_max]).nice();
+    y.domain([AUTOTUNE.y_axis.minval, AUTOTUNE.y_axis.maxval]).nice();
 
     var widthScale = d3.time.scale().range([100, 0]).domain(d3.extent(dates));
 
