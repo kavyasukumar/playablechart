@@ -185,6 +185,18 @@
     $('#nextbtn').addClass('startState').removeClass('playState');
   }
 
+  var showTime = function(e){
+    var currTime = parseInt(audioPlayer.currentTime);
+
+    var sec = currTime % 60;
+    var min = Math.floor( currTime / 60 ) % 60;
+    
+    sec = sec < 10 ? "0"+sec : sec;
+    min = min < 10 ? "0"+min : min;
+
+    $('#timelabel').text(min + ":" + sec);
+  }
+
   var playAudioForSeconds = function(duration){
     audioPlayer.play();
     setTimeout(function(){
@@ -200,4 +212,5 @@
     }, duration + 50);
   }
   d3.select('#nextbtn').on('click', playNext);
+  audioPlayer.addEventListener("timeupdate",showTime);
 })($);
