@@ -48,6 +48,16 @@
       return false;
     });
 
+    var comments = data.filter(function(d, i){
+      if(d.Text || d.Text == 0 ){
+        return true;
+      }
+      if (i == data.length - 1) {
+        return true;
+      }
+      return false;
+    });
+
     // Compute the minimum and maximum date, and the maximum price.
     x.domain([dates[0], dates[dates.length - 1]]);
     y.domain([AUTOTUNE.y_axis.minval, AUTOTUNE.y_axis.maxval]).nice();
@@ -105,7 +115,7 @@
     // Plot stopping points
     svg
       .selectAll('.dot')
-      .data(stops)
+      .data(comments)
       .enter()
     .append('circle')
       .classed('dot', true)
