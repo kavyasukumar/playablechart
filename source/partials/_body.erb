@@ -1,5 +1,11 @@
-<audio id="audioPlayer">
+<audio id="audioPlayer" preload="auto">
 	 <source src="<%= data.autotune.audio_file_url %>" type="audio/mpeg"/>
 </audio>
+<div id="topper">
+	<h2><%= data.autotune.title %></h2>
+	<% unless data.autotune.deck.nil? %>
+	<h4><%= data.autotune.deck %></h4>
+	<% end %>
+</div>
 <svg></svg>
 <button id="nextbtn" class='btn btn-primary'>Explain this</button>

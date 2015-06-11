@@ -12,7 +12,7 @@
   // An area generator, for the light fill.
   var area = d3.svg.area()
       .interpolate("monotone")
-      .x(function(d) { return x(parse(d.x_axis)); })
+      .x(function(d) { return x(new Date(d.x_axis)); })
       .y0(height)
       .y1(function(d) { return y(d.y1); });
 
@@ -89,24 +89,16 @@
       .attr('x', -1 * width)
       .attr('y', -1 * height)
       .attr('height', height)
-      .attr('width', width)
+      .attr('width', 0)
       .attr('class', 'curtain')
       .attr('transform', 'rotate(180)')
-      .style('fill', '#ffffff')
+      .style('fill', '#ffffff');
 
-    /* Optionally add a guideline */
-    var guideline = svg.append('line')
-      .attr('stroke', '#333')
-      .attr('stroke-width', 0)
-      .attr('class', 'guide')
-      .attr('x1', 1)
-      .attr('y1', 1)
-      .attr('x2', 1)
-      .attr('y2', height)
 
-    d3.select('#nextbtn').on('click', function(e){
+  var playNext = function(e){
       if(stopIndex == -1){
         $(this).text('Next');
+        d3.select('rect.curtain').attr('width',width +'px');
       }
       var thisStop = getNextStop();
       var widthpc= widthScale(new Date(thisStop.x_axis))/100;
@@ -119,7 +111,7 @@
         .attr('width', width * widthpc + 'px');
 
       playAudioForSeconds(duration);
-    });
+    }
 
   var getNextStop = function(){
     stopIndex++;
@@ -131,10 +123,10 @@
 
   var getDuration = function(){
     if(stops[stopIndex]){
-      return (stops[stopIndex].Sound*1000) - timeElapsed;
+      return (stops[stopIndex].Sound * 1000) - timeElapsed;
     }
     else {
-      return (audioPlayer.duration*1000) - timeElapsed;
+      return (audioPlayer.duration * 1000) - timeElapsed;
     }
   }
 
@@ -143,6 +135,13 @@
     setTimeout(function(){
       audioPlayer.pause(); 
       timeElapsed += duration;
-    }, duration + 100);
+      if(stopIndex != stops.length-1){
+        playNext();
+      }
+    }, duration + 50);
   }
+
+
+
+    d3.select('#nextbtn').on('click', playNext);
 })($);

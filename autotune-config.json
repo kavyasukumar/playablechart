@@ -49,6 +49,10 @@
           "format": "uri",
           "required": true
         },
+        "continuousplay":{
+          "title": "Continuous play",
+          "type":"boolean"
+        },
         "credits":{
           "type":"object",
           "title":"Credits",
@@ -84,6 +88,10 @@
         },
         "deck":{
             "type":"textarea"
+        },
+        "continuousplay":{
+          "helper": "Checking the box above makes the explainer play continuously through the end. Otherwise it will pause at each hotspot.",
+          "type":"checkbox"
         }
       }
     }
