@@ -9,12 +9,25 @@
 	<h4 class="stacker"><%= data.autotune.deck %></h4>
 <% end %>
 <svg></svg>
-<div id="credits" class="stacker">
-	<p>
+<div class="stacker">
+	<p id="credits">
 	<% if !data.autotune.credits.link.nil? && !data.autotune.credits.text.nil? %>
 		Data : <a href= "<%= data.autotune.credits.link %>" target="_blank"><%= data.autotune.credits.text %></a>
 	<% elsif !data.autotune.credits.text.nil? %>
 		Data : <%= data.autotune.credits.text %>
 	<% end %>
 	</p>
+	 <div id='social-media'>
+      <ul>
+        <li>
+          <a class='twitter-share icon-twitter noaction' data-analytics-social="twitter" target="_blank"></a>
+        </li>
+        <li>
+          <a class='fb-share icon-facebook noaction' data-analytics-social="facebook" target="_blank"></a>
+        </li>
+        <li>
+          <a class='gplus-share icon-gplus noaction' data-analytics-social="gplus" target="_blank"></a>
+        </li>
+      </ul>
+    </div> 
 </div>

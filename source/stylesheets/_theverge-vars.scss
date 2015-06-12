@@ -1,0 +1,22 @@
+$chart-color: #FA4B2A;
+ $text-color: #4c4d4e;
+ $highlight-color: #666;
+ $background-color: #f9f9f9;
+ $topper-bgcolor: #F7F1EE;
+ $textoverlay-bgcolor: #F7F1EE;
+
+html, body {
+  font-family: "Helvetica", sans-serif;
+}
+
+h2, .x.axis .tick text{
+  font-family: "Helvetica", sans-serif;
+}
+
+h4, .y.axis .tick text{
+  font-family: "Helvetica", sans-serif;
+}
+
+.tooltip{
+  background: $textoverlay-bgcolor;
+}

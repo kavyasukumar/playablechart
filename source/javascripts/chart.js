@@ -1,6 +1,6 @@
 (function($) {
   var margin = {top: 80, right: 80, bottom: 80, left: 80},
-  width = $(window).width() - margin.left - margin.right,
+  width = ($(window).width()*.9)- margin.left - margin.right,
   height = Math.min(500, $(window).height()) - margin.top - margin.bottom;
 
   // Scales and axes. Note the inverted domain for the y-scale: bigger is up!
@@ -126,19 +126,22 @@
         return y(d.y1)
       })
       .attr('r', 5)
-      .attr('stroke', '#38EDF5')
       .attr('stroke-width', 3)
-      .style('fill', '#EAEAEA')
 
       .on('mouseenter', function(d) {
-        d3.select(this).style('fill', '#38EDF5')
+        d3.select(this).classed('highlight', true)
         tooltip
           .style('display', 'block')
           .transition()
             .duration(200)
             .style('opacity', 1);
         tooltip
-          .style('left', (d3.event.pageX + 8) + 'px')
+          .style('left', function(){ 
+            if(d3.event.pageX <= width/2){
+              return d3.event.pageX + 8 +'px';
+            }
+            return d3.event.pageX - 200 +'px';
+          })
           .style('top', (d3.event.pageY + 8) + 'px')
           .html(d.Text);
       })
@@ -148,7 +151,7 @@
             .duration(200)
             .style('opacity', 0)
             .style('display', 'none');
-        d3.select(this).style('fill', '#EAEAEA')
+        d3.select(this).classed('highlight',false);
       });
 
    /* Add 'curtain' rectangle to hide entire graph */
@@ -273,4 +276,9 @@
   }
   d3.select('#nextbtn').on('click', playNext);
   audioPlayer.addEventListener("timeupdate",showTime);
+
+  var parentPageUrl = document.URL;
+  $('.icon-twitter').attr('href', 'http://twitter.com/home?status=' + AUTOTUNE.title + ': ' + parentPageUrl);
+  $('.icon-facebook').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + parentPageUrl);
+  $('.icon-gplus').attr('href', 'https://plus.google.com/share?url=' + parentPageUrl);
 })($);

@@ -35,7 +35,12 @@
     font-style:normal;
   }
 
-
+ $chart-color: #f6901e;
+ $text-color: #4c4d4e;
+ $highlight-color: #c7eef2;
+ $background-color: #f9f9f9;
+  $topper-bgcolor: #c7eef2;
+ $textoverlay-bgcolor: #c7eef2;
 html, body {
   font-family: "Balto", sans-serif;
 }
@@ -46,4 +51,8 @@ h2, .x.axis .tick text{
 
 h4, .y.axis .tick text{
   font-family: "Balto medium", sans-serif;
+}
+
+.tooltip{
+  background: rgba($textoverlay-bgcolor, 0.85);
 }

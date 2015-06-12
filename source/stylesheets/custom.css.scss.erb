@@ -1,19 +1,21 @@
 // Mixins
 @import 'compass';
 @import 'compass/reset';
+@import 'fonts';
 
 
 @import "compass/css3/transition";
 @import 'bootstrap';
 
-@import "vox-vars";
+@import '<%= data.autotune.theme %>-vars';
 
- $chart-color: #f6901e;
- $text-color: #4c4d4e;
- $highlight-color: #c7eef2;
- $background-color: #f9f9f9;
 
- $transparent : rgba(0,0,0,00);
+$twitter: #00ACEE;
+$facebook: #3B5998;
+$gplus: #D34836;
+
+
+$transparent : rgba(0,0,0,00);
 
  body, html{
   background-color: $background-color;
@@ -67,17 +69,29 @@ line.horizontalGrid{
   stroke: rgba($text-color, .1);
 }
 
+circle.dot{
+  stroke: $highlight-color;
+  fill: $background-color;
+  &.highlight{
+    fill: $highlight-color;
+  }
+}
+
 
 .tooltip {
-  max-width: 16em;
+  width: 200px;
   font-size: 0.9em;
-  background: rgba($highlight-color, 0.85);
   color: $text-color;
   padding: 1em;
   border-radius: 0.4em;
 }
 
+.dot{
+  cursor: pointer;
+}
+
 #topper {
+  background-color:$topper-bgcolor;
   h2{
     width:80%;
     display: inline-block;
@@ -110,4 +124,28 @@ line.horizontalGrid{
     padding-left: 5px;
   }
 }
+}
+#credits{
+  float:left;
+}
+#social-media{
+  float:right;
+  ul{
+    li{
+      display: inline-block;
+      a, a:hover{
+        text-decoration: none;
+
+      }
+      a.icon-twitter{
+        color:$twitter;
+      }
+      a.icon-facebook{
+        color:$facebook;
+      }
+      a.icon-gplus{
+        color:$gplus;
+      }
+    }
+  }
 }
