@@ -9,10 +9,12 @@
 	<h4 class="stacker"><%= data.autotune.deck %></h4>
 <% end %>
 <svg></svg>
-<p id="credits" class="stacker">
+<div id="credits" class="stacker">
+	<p>
 	<% if !data.autotune.credits.link.nil? && !data.autotune.credits.text.nil? %>
 		Data : <a href= "<%= data.autotune.credits.link %>" target="_blank"><%= data.autotune.credits.text %></a>
 	<% elsif !data.autotune.credits.text.nil? %>
 		Data : <%= data.autotune.credits.text %>
 	<% end %>
-</p>
+	</p>
+</div>

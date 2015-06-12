@@ -62,7 +62,7 @@
     x.domain([dates[0], dates[dates.length - 1]]);
     y.domain([AUTOTUNE.y_axis.minval, AUTOTUNE.y_axis.maxval]).nice();
 
-    var curtainWidth = width + 20;
+    var curtainWidth = width;
 
     var widthScale = d3.time.scale().range([curtainWidth, 0]).domain(d3.extent(dates));
 
